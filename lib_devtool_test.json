@@ -1,0 +1,12 @@
+{
+    "name": "lib_devtool_test",
+    "target": "armv6",
+    "description": "[name] [portnum] [baudrate]",
+    "scripts": "./lib_devtool_test /dev/ttyUSB4 115200",
+    "data": [
+        "Test"
+    ],
+    "control": [
+        "Control_Test"
+    ]
+}

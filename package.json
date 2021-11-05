@@ -1,0 +1,24 @@
+{
+  "name": "msw_devtool_test",
+  "version": "1.0.0",
+  "description": "For Dev Tool Test",
+  "main": "msw_devtool_test.js",
+  "dependencies": {
+    "mqtt": "^4.2.8",
+    "serialport": "^9.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IoTKETI/msw_devtool_test.git"
+  },
+  "author": "Wonseok Jung",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IoTKETI/msw_devtool_test/issues"
+  },
+  "homepage": "https://github.com/IoTKETI/msw_devtool_test#readme"
+}
