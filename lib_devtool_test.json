@@ -2,7 +2,7 @@
     "name": "lib_devtool_test",
     "target": "armv6",
     "description": "[name] [portnum] [baudrate]",
-    "scripts": "./lib_devtool_test /dev/ttyUSB4 115200",
+    "scripts": "./lib_devtool_test.exe /dev/ttyUSB4 115200",
     "data": [
         "Test"
     ],
