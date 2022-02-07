@@ -90,6 +90,7 @@ function init() {
                         let sub_container_name = config.lib[idx].control[i];
                         _topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + my_msw_name + '/' + sub_container_name;
                         msw_mqtt_client.subscribe(_topic);
+                        local_msw_mqtt_client.subscribe(_topic);
                         msw_sub_muv_topic.push(_topic);
                         console.log('[msw_mqtt] msw_sub_muv_topic[' + i + ']: ' + _topic);
                     }
@@ -168,12 +169,6 @@ function msw_mqtt_connect(broker_ip, port) {
 
         msw_mqtt_client.on('connect', function () {
             console.log('[msw_mqtt_connect] connected to ' + broker_ip);
-            for (let idx in msw_sub_muv_topic) {
-                if (msw_sub_muv_topic.hasOwnProperty(idx)) {
-                    msw_mqtt_client.subscribe(msw_sub_muv_topic[idx]);
-                    console.log('[msw_mqtt] msw_sub_muv_topic[' + idx + ']: ' + msw_sub_muv_topic[idx]);
-                }
-            }
         });
 
         msw_mqtt_client.on('message', function (topic, message) {
@@ -242,6 +237,7 @@ function local_msw_mqtt_connect(broker_ip, port) {
                 if (msw_sub_fc_topic.hasOwnProperty(idx)) {
                     if (topic === msw_sub_fc_topic[idx]) {
                         setTimeout(on_process_fc_data, parseInt(Math.random() * 5), topic, message.toString());
+                        break;
                     }
                 }
             }
@@ -249,6 +245,7 @@ function local_msw_mqtt_connect(broker_ip, port) {
                 if (msw_sub_lib_topic.hasOwnProperty(idx)) {
                     if (topic === msw_sub_lib_topic[idx]) {
                         setTimeout(on_receive_from_lib, parseInt(Math.random() * 5), topic, message.toString());
+                        break;
                     }
                 }
             }
