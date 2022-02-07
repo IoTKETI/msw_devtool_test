@@ -229,6 +229,12 @@ function local_msw_mqtt_connect(broker_ip, port) {
                     console.log('[msw_mqtt] msw_sub_lib_topic[' + idx + ']: ' + msw_sub_lib_topic[idx]);
                 }
             }
+            for (let idx in msw_sub_muv_topic) {
+                if (msw_sub_muv_topic.hasOwnProperty(idx)) {
+                    msw_mqtt_client.subscribe(msw_sub_muv_topic[idx]);
+                    console.log('[msw_mqtt] msw_sub_muv_topic[' + idx + ']: ' + msw_sub_muv_topic[idx]);
+                }
+            }
         });
 
         local_msw_mqtt_client.on('message', function (topic, message) {
@@ -243,6 +249,14 @@ function local_msw_mqtt_connect(broker_ip, port) {
                 if (msw_sub_lib_topic.hasOwnProperty(idx)) {
                     if (topic === msw_sub_lib_topic[idx]) {
                         setTimeout(on_receive_from_lib, parseInt(Math.random() * 5), topic, message.toString());
+                    }
+                }
+            }
+            for (let idx in msw_sub_muv_topic) {
+                if (msw_sub_muv_topic.hasOwnProperty(idx)) {
+                    if (topic === msw_sub_muv_topic[idx]) {
+                        setTimeout(on_receive_from_muv, parseInt(Math.random() * 5), topic, message.toString());
+                        break;
                     }
                 }
             }
