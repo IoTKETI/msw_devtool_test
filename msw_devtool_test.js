@@ -223,29 +223,26 @@ function local_msw_mqtt_connect(broker_ip, port) {
                     console.log('[local_msw_mqtt] msw_sub_fc_topic[' + idx + ']: ' + msw_sub_fc_topic[idx]);
                 }
             }
+            for (let idx in msw_sub_lib_topic) {
+                if (msw_sub_lib_topic.hasOwnProperty(idx)) {
+                    msw_mqtt_client.subscribe(msw_sub_lib_topic[idx]);
+                    console.log('[msw_mqtt] msw_sub_lib_topic[' + idx + ']: ' + msw_sub_lib_topic[idx]);
+                }
+            }
         });
 
         local_msw_mqtt_client.on('message', function (topic, message) {
-            for (let idx in msw_sub_lib_topic) {
-                if (msw_sub_lib_topic.hasOwnProperty(idx)) {
-                    if (topic === msw_sub_lib_topic[idx]) {
-                        let topic_arr = topic.split('/');
-                        if (topic_arr[topic_arr.length - 1] === config.lib[0].data[0]) {
-                            setTimeout(on_receive_from_lib, parseInt(Math.random() * 5), topic, message.toString());
-                            break;
-                        } else if (topic_arr[topic_arr.length - 1] === config.lib[0].data[1]) {
-                            setTimeout(on_receive_from_lib, parseInt(Math.random() * 5), topic, message.toString('hex'));
-                            break;
-                        }
-                    }
-                }
-            }
-
             for (let idx in msw_sub_fc_topic) {
                 if (msw_sub_fc_topic.hasOwnProperty(idx)) {
                     if (topic === msw_sub_fc_topic[idx]) {
                         setTimeout(on_process_fc_data, parseInt(Math.random() * 5), topic, message.toString());
-                        break;
+                    }
+                }
+            }
+            for (let idx in msw_sub_lib_topic) {
+                if (msw_sub_lib_topic.hasOwnProperty(idx)) {
+                    if (topic === msw_sub_lib_topic[idx]) {
+                        setTimeout(on_receive_from_lib, parseInt(Math.random() * 5), topic, message.toString());
                     }
                 }
             }
@@ -290,6 +287,7 @@ function parseDataMission(topic, str_message) {
         let topic_arr = topic.split('/');
         let data_topic = '/Mobius/' + config.gcs + '/Mission_Data/' + config.drone + '/' + config.name + '/' + topic_arr[topic_arr.length - 1];
         msw_mqtt_client.publish(data_topic, str_message);
+        local_msw_mqtt_client.publish(data_topic, str_message);
     } catch (e) {
         console.log('[parseDataMission] data format of lib is not json');
     }
@@ -301,7 +299,7 @@ function parseControlMission(topic, str_message) {
     try {
         let topic_arr = topic.split('/');
         let _topic = '/MUV/control/' + config.lib[0].name + '/' + topic_arr[topic_arr.length - 1];
-        msw_mqtt_client.publish(_topic, str_message);
+        local_msw_mqtt_client.publish(_topic, str_message);
     } catch (e) {
         console.log('[parseControlMission] data format of lib is not json');
     }
@@ -311,10 +309,10 @@ function parseFcData(topic, str_message) {
     let topic_arr = topic.split('/');
     if (topic_arr[topic_arr.length - 1] === 'system_time') {
         let _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[0]; // 'system_time'
-        msw_mqtt_client.publish(_topic, str_message);
+        local_msw_mqtt_client.publish(_topic, str_message);
     } else if (topic_arr[topic_arr.length - 1] === 'timesync') {
         let _topic = '/MUV/control/' + config.lib[0].name + '/' + config.lib[0].control[1]; // 'timesync'
-        msw_mqtt_client.publish(_topic, str_message);
+        local_msw_mqtt_client.publish(_topic, str_message);
     } else {
     }
 }
