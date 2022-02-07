@@ -1,3 +1,3 @@
 #!/usr/bin/sh
 
-node msw_devtool_test.js
+pm2 start msw_devtool_test.js
