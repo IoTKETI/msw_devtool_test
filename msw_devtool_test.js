@@ -238,6 +238,9 @@ function local_msw_mqtt_connect(broker_ip, port) {
         });
 
         local_msw_mqtt_client.on('message', function (topic, message) {
+            if (message.toString() === 'OFF') {
+                console.log(message.toString());
+            }
             for (let idx in msw_sub_fc_topic) {
                 if (msw_sub_fc_topic.hasOwnProperty(idx)) {
                     if (topic === msw_sub_fc_topic[idx]) {
